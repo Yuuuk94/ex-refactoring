@@ -13,25 +13,8 @@ function statement(invoice, plays) {
 
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    let thisAmount = 0;
+    let thisAmount = amountFor(perf, play);
 
-    switch (play.type) {
-      case "tragedy": //비극
-        thisAmount = 40000;
-        if (perf.audience > 30) {
-          thisAmount += 1000 * (perf.audience - 30);
-        }
-        break;
-      case "comedy": //희극
-        thisAmount = 30000;
-        if (perf.audience > 20) {
-          thisAmount += 10000 + 500 * (perf.audience - 20);
-        }
-        thisAmount += 300 * perf.audience;
-        break;
-      default:
-        throw new Error(`알 수 없는 장르: ${play.type}`);
-    }
     // 포인트를 적립한다.
     volumeCredits += Math.max(perf.audience - 30, 0);
     // 희극 관객 5명마다 추가 포인트를 제공한다.
@@ -47,6 +30,28 @@ function statement(invoice, plays) {
   result += `적립 포인트: ${volumeCredits}점\n`;
 
   return result;
+
+  function amountFor(aPerformance, play) {
+    let result = 0;
+    switch (play.type) {
+      case "tragedy": //비극
+        result = 40000;
+        if (aPerformance.audience > 30) {
+          result += 1000 * (aPerformance.audience - 30);
+        }
+        break;
+      case "comedy": //희극
+        result = 30000;
+        if (aPerformance.audience > 20) {
+          result += 10000 + 500 * (aPerformance.audience - 20);
+        }
+        result += 300 * aPerformance.audience;
+        break;
+      default:
+        throw new Error(`알 수 없는 장르: ${play.type}`);
+    }
+    return result;
+  }
 }
 
 const result = statement(invoices, play);
@@ -59,5 +64,6 @@ const answer =
 // Othello: $500.00 (40석)
 // 총액: $1,730.00
 // 적립 포인트: 47점
+
 console.log(result == answer);
 console.log(result);
