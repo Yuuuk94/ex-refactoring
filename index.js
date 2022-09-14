@@ -49,6 +49,7 @@ function usd(aNumber) {
 }
 
 const result = statement(invoices, play);
+const resultHTML = htmlStatement(invoices, play);
 
 const answer =
   "청구 내역(고객명: BigCo)\nHamlet: $650.00 (55석)\nAs you like it: $580.00 (35석)\nOthello: $500.00 (40석)\n총액: $1,730.00\n적립 포인트: 47점\n";
@@ -61,3 +62,4 @@ const answer =
 
 console.log(result == answer);
 console.log(result);
+console.log(resultHTML);
